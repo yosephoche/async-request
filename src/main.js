@@ -8,13 +8,18 @@ request.debug = false;
 
 Arequest = (defaultOptions) => {
     let arequest;
-
+    let gzip;
     Arequest.validateOptions(defaultOptions);
 
     arequest = async (url, options) => {
         return new Promise((resolve) => {
             Arequest.validateOptions(options);
-
+            gzip = _.has(url, 'gzip');
+            
+            if (gzip) {
+                options = _.assign(url, options, defaultOptions);
+            }
+            
             options = _.assign({url: url}, options, defaultOptions);
 
             options = Arequest.mapOptions(options);
